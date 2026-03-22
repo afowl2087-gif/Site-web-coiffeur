@@ -1,35 +1,32 @@
 <?php
 session_start();
+if (isset($_SESSION['user_id'])) {
+    header("Location: dashboard.php");
+    exit;
+}
 
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $password = trim($_POST['password']);
 
     $conn = new mysqli("localhost", "root", "", "salon_coiffure");
+    if ($conn->connect_error) die("Erreur connexion : " . $conn->connect_error);
 
-    if ($conn->connect_error) {
-        die("Erreur connexion");
-    }
-
-    // Vérifier si l'utilisateur existe
-    $stmt = $conn->prepare("SELECT id, firstname, password FROM clients WHERE email = ?");
+    $stmt = $conn->prepare("SELECT Id_clients, firstname, password FROM clients WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
-
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-
-        // Vérification du mot de passe
         if (password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['Id_clients'];
             $_SESSION['firstname'] = $user['firstname'];
 
-            $message = "<div class='alert alert-success'>Connexion réussie ✅</div>";
-            // header("Location: dashboard.php"); // redirection possible
+            header("Location: dashboard.php");
+            exit;
         } else {
             $message = "<div class='alert alert-danger'>Mot de passe incorrect</div>";
         }
@@ -51,17 +48,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body class="container mt-5">
 
-    <h2>Connexion</h2>
+<h2>Connexion</h2>
+<?php echo $message; ?>
 
-    <!-- Message -->
-    <?php echo $message; ?>
+<form method="post">
+    <input type="email" name="email" placeholder="Email" class="form-control mb-2" required>
+    <input type="password" name="password" placeholder="Mot de passe" class="form-control mb-3" required>
+    <button type="submit" class="btn btn-primary">Se connecter</button>
+</form>
 
-    <form method="post">
-        <input type="email" name="email" placeholder="Email" class="form-control mb-2" required>
-        <input type="password" name="password" placeholder="Mot de passe" class="form-control mb-3" required>
-
-        <button type="submit" class="btn btn-primary">Se connecter</button>
-    </form>
+<p class="mt-3">Pas encore inscrit ? <a href="formulaire-inscription2.php">S'inscrire</a></p>
 
 </body>
 </html>
