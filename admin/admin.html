@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Back Office - Salon de Coiffure</title>
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+
+    <h1>Back Office - Salon de Coiffure</h1>
+
+    
+    <div id="menu">
+        <button onclick="afficherSection('clients')">Clients</button>
+        <button onclick="afficherSection('services')">Services</button>
+        <button onclick="afficherSection('reservations')">Réservations</button>
+        <button onclick="afficherSection('disponibilites')">Disponibilités</button>
+    </div>
+
+    
+    <div id="clients" class="section">
+        <h2>Gestion des Clients</h2>
+
+        <h3>Ajouter un client</h3>
+        <form id="form-client" onsubmit="ajouterClient(event)">
+            <label>Prénom :</label>
+            <input type="text" id="client-prenom" required><br>
+
+            <label>Nom :</label>
+            <input type="text" id="client-nom" required><br>
+
+            <label>Email :</label>
+            <input type="email" id="client-email" required><br>
+
+            <label>Téléphone :</label>
+            <input type="text" id="client-telephone"><br>
+
+            <label>Civilité :</label>
+            <select id="client-civilite">
+                <option value="">--</option>
+                <option value="M.">M.</option>
+                <option value="Mme">Mme</option>
+            </select><br>
+
+            <label>Mot de passe :</label>
+            <input type="password" id="client-password" required><br>
+
+            <button type="submit">Ajouter le client</button>
+        </form>
+
+        <h3>Liste des clients</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Civilité</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableau-clients">
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div id="services" class="section section-cachee">
+        <h2>Gestion des Services</h2>
+
+        <h3>Ajouter un service</h3>
+        <form id="form-service" onsubmit="ajouterService(event)">
+            <label>Nom du service :</label>
+            <input type="text" id="service-nom" required><br>
+
+            <label>Description :</label>
+            <input type="text" id="service-description"><br>
+
+            <label>Durée (minutes) :</label>
+            <input type="number" id="service-duree" required><br>
+
+            <label>Prix (€) :</label>
+            <input type="number" step="0.01" id="service-prix" required><br>
+
+            <button type="submit">Ajouter le service</button>
+        </form>
+
+        <h3>Liste des services</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Durée</th>
+                    <th>Prix</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableau-services">
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div id="reservations" class="section" style="display:none">
+        <h2>Gestion des Réservations</h2>
+
+        <h3>Ajouter une réservation</h3>
+        <form id="form-reservation" onsubmit="ajouterReservation(event)">
+            <label>Client :</label>
+            <select id="resa-client"></select><br>
+
+            <label>Service :</label>
+            <select id="resa-service"></select><br>
+
+            <label>Disponibilité :</label>
+            <select id="resa-dispo"></select><br>
+
+            <label>Statut :</label>
+            <select id="resa-statut">
+                <option value="0">En attente</option>
+                <option value="1">Confirmée</option>
+                <option value="2">Annulée</option>
+            </select><br>
+
+            <button type="submit">Ajouter la réservation</button>
+        </form>
+
+        <h3>Liste des réservations</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableau-reservations">
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div id="disponibilites" class="section" style="display:none">
+        <h2>Gestion des Disponibilités</h2>
+
+        <h3>Ajouter une disponibilité</h3>
+        <form id="form-dispo" onsubmit="ajouterDispo(event)">
+            <label>Date et heure :</label>
+            <input type="datetime-local" id="dispo-date" required><br>
+
+            <label>Statut :</label>
+            <select id="dispo-actif">
+                <option value="1">Disponible</option>
+                <option value="0">Indisponible</option>
+            </select><br>
+
+            <button type="submit">Ajouter la disponibilité</button>
+        </form>
+
+        <h3>Liste des disponibilités</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date et heure</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableau-dispos">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="../assets/javascript/script.js"></script>
+</body>
+</html>
