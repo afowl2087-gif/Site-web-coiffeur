@@ -1,12 +1,29 @@
+<?php
+session_start();
+
+// Sécurité : accès uniquement si connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: formulaire-connexion3.php");
+    exit;
+}
+
+// Fonction anti XSS
+function e($str) {
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Golden Salon</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+
 <body>
 
 <!-- NAVBAR -->
@@ -15,9 +32,10 @@
     <img src="./assets/img/logo.png" width="120">
 
     <div class="ms-auto">
+      <span class="me-3">👋 Bonjour <?php echo e($_SESSION['firstname']); ?></span>
       <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
-      <a href="contact.html" class="btn btn-custom me-2">CONTACT</a>
-      <a href="login.html" class="btn btn-custom">LOGIN</a>
+      <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+      <a href="logout.php" class="btn btn-danger">LOGOUT</a>
     </div>
   </div>
 </nav>
@@ -30,7 +48,7 @@
       <div class="col-md-6">
         <h1>GOLDEN SALON</h1>
         <p>
-          Bienvenue chez GOLDEN SALON !<br>
+          Bienvenue <?php echo e($_SESSION['firstname']); ?> chez GOLDEN SALON !<br>
           Depuis 2015, nous offrons des services de coiffure de qualité.<br><br>
           Notre équipe est à votre écoute pour sublimer votre style.<br><br>
           Venez nous rendre visite !
@@ -62,15 +80,15 @@
         <h2 class="mt-5 mb-3">Adresse et infos pratiques</h2>
 
         <div class="info mb-2">
-          <i class="bi bi-geo-alt"></i> 55 rue Sully, Amiens 80000
+          55 rue Sully, Amiens 80000
         </div>
 
         <div class="info mb-2">
-          <i class="bi bi-clock"></i> Du lundi au samedi, 10h - 20h
+          Du lundi au samedi, 10h - 20h
         </div>
 
         <div class="info">
-          <i class="bi bi-telephone"></i> +33 712345678
+          +33 712345678
         </div>
       </div>
 
@@ -95,14 +113,8 @@
     <h5>Golden Salon</h5>
     <p>Votre salon de coiffure à Amiens ✂️</p>
 
-    <p><i class="bi bi-geo-alt"></i> 55 rue Sully, Amiens</p>
-    <p><i class="bi bi-telephone"></i> +33 712345678</p>
-
-    <div class="mb-3">
-      <i class="bi bi-facebook me-3"></i>
-      <i class="bi bi-instagram me-3"></i>
-      <i class="bi bi-whatsapp"></i>
-    </div>
+    <p>55 rue Sully, Amiens</p>
+    <p>+33 712345678</p>
 
     <hr class="bg-light">
 

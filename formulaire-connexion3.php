@@ -3,7 +3,7 @@ session_start();
 
 // Redirection si déjà connecté
 if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
+    header("Location: dashboard3.php");
     exit;
 }
 
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $user['Id_clients'];
                 $_SESSION['firstname'] = $user['firstname'];
 
-                header("Location: accueil.html");
+                header("Location: dashboard3.php");
                 exit;
             } else {
                 $message = "<div class='alert alert-danger'>Mot de passe incorrect</div>";
