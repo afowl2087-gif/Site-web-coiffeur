@@ -7,6 +7,11 @@ if (isset($_SESSION['user_id'])) {
     exit;
 }
 
+// Fonction pour sécuriser les sorties (XSS futur)
+function e($str) {
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo = new PDO("mysql:host=localhost;dbname=salon_coiffure;charset=utf8", "root", "");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Préparer la requête
+        // Préparer la requête pour récupérer l'utilisateur
         $stmt = $pdo->prepare("SELECT Id_clients, firstname, password FROM clients WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     } catch (PDOException $e) {
-        // Sécuriser le message d'erreur pour affichage
-        $message = "<div class='alert alert-danger'>Erreur base de données : " . htmlspecialchars($e->getMessage()) . "</div>";
+        // Toujours sécuriser les messages d'erreur
+        $message = "<div class='alert alert-danger'>Erreur base de données : " . e($e->getMessage()) . "</div>";
     }
 }
 ?>

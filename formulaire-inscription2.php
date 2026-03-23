@@ -3,15 +3,19 @@ session_start();
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nom = $_POST['lastname'];
-    $prenom = $_POST['firstname'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirm = $_POST['confirm_password'];
-    $telephone = $_POST['phone'];
+    // Récupérer et nettoyer toutes les données utilisateurs
+    $nom = trim($_POST['lastname']);
+    $prenom = trim($_POST['firstname']);
+    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    $password = trim($_POST['password']);
+    $confirm = trim($_POST['confirm_password']);
+    $telephone = trim($_POST['phone']);
     $civility = $_POST['civility'];
 
-    if ($password !== $confirm) {
+    // Validation de base
+    if (!$email) {
+        $message = "<div class='alert alert-danger'>Email invalide</div>";
+    } elseif ($password !== $confirm) {
         $message = "<div class='alert alert-danger'>Les mots de passe ne correspondent pas</div>";
     } else {
         try {
@@ -32,10 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt = $pdo->prepare("INSERT INTO clients (lastname, firstname, email, phone, password, civility) VALUES (?, ?, ?, ?, ?, ?)");
                 $stmt->execute([$nom, $prenom, $email, $telephone, $hashedPassword, $civility]);
 
-                $message = "<div class='alert alert-success'>Inscription réussie ✅</div>";
+                // Ici, on affiche des données utilisateurs, donc on échappe tout !
+                $safePrenom = htmlspecialchars($prenom, ENT_QUOTES, 'UTF-8');
+                $safeNom = htmlspecialchars($nom, ENT_QUOTES, 'UTF-8');
+
+                $message = "<div class='alert alert-success'>Inscription réussie ✅ Bienvenue $safePrenom $safeNom !</div>";
             }
         } catch (PDOException $e) {
-            $message = "<div class='alert alert-danger'>Erreur base de données : " . htmlspecialchars($e->getMessage()) . "</div>";
+            // Toujours échapper les messages d'erreur pour XSS futur
+            $message = "<div class='alert alert-danger'>Erreur base de données : " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</div>";
         }
     }
 }
@@ -71,3 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
+
+
+
