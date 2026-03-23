@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,75 +17,76 @@
 
 <body>
 
-<!-- TOP BAR -->
-<div class="container top-bar d-flex justify-content-between align-items-center">
-  <img src="./assets/img/logo.png" width="80">
+  <!-- TOP BAR -->
+  <div class="container top-bar d-flex justify-content-between align-items-center">
+    <img src="./assets/img/logo.png" width="80">
 
-  <div>
-    <button class="btn btn-custom me-2">PRENDRE RDV</button>
-    <button class="btn btn-custom me-2">CONTACT</button>
-    <button class="btn btn-outline-dark rounded-circle">
-      <i class="bi bi-arrow-left"></i>
-    </button>
+    <div>
+      <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
+      <a href="contact.html" class="btn btn-custom me-2">CONTACT</a>
+      <a href="javascript:history.back()" class="btn btn-outline-dark rounded-circle">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+    </div>
   </div>
-</div>
 
-<!-- MAIN -->
-<div class="container mt-4">
-  <div class="row g-4">
+  <!-- MAIN -->
+  <div class="container mt-4">
+    <div class="row g-4">
 
-    <!-- LEFT PROFILE -->
-    <div class="col-md-4">
-      <div class="profile-card">
-        <div class="profile-icon">
-          <i class="bi bi-person"></i>
+      <!-- LEFT PROFILE -->
+      <div class="col-md-4">
+        <div class="profile-card">
+          <div class="profile-icon">
+            <i class="bi bi-person"></i>
+          </div>
+          <h5>USERNAME</h5>
         </div>
-        <h5>USERNAME</h5>
       </div>
+
+      <!-- RIGHT -->
+      <div class="col-md-8">
+
+        <div class="title-box">
+          USERNAME
+        </div>
+
+        <div class="form-container">
+
+          <input type="text" class="form-control input-custom" placeholder="LASTNAME">
+          <input type="text" class="form-control input-custom" placeholder="FIRSTNAME">
+          <input type="email" class="form-control input-custom" placeholder="username@gmail.com">
+          <input type="text" class="form-control input-custom" placeholder="+33 123456789">
+
+        </div>
+
+      </div>
+
     </div>
-
-    <!-- RIGHT -->
-    <div class="col-md-8">
-
-      <div class="title-box">
-        USERNAME
-      </div>
-
-      <div class="form-container">
-
-        <input type="text" class="form-control input-custom" placeholder="LASTNAME">
-        <input type="text" class="form-control input-custom" placeholder="FIRSTNAME">
-        <input type="email" class="form-control input-custom" placeholder="username@gmail.com">
-        <input type="text" class="form-control input-custom" placeholder="+33 123456789">
-
-      </div>
-
-    </div>
-
   </div>
-</div>
-<br>
-<footer class="bg-dark text-white text-center py-4">
-  <div class="container">
+  <br>
+  <footer class="bg-dark text-white text-center py-4">
+    <div class="container">
 
-    <h5>Golden Salon</h5>
-    <p>Votre salon de coiffure à Amiens ✂️</p>
+      <h5>Golden Salon</h5>
+      <p>Votre salon de coiffure à Amiens ✂️</p>
 
-    <p><i class="bi bi-geo-alt"></i> 55 rue Sully, Amiens</p>
-    <p><i class="bi bi-telephone"></i> +33 712345678</p>
+      <p><i class="bi bi-geo-alt"></i> 55 rue Sully, Amiens</p>
+      <p><i class="bi bi-telephone"></i> +33 712345678</p>
 
-    <div class="mb-3">
-      <i class="bi bi-facebook me-3"></i>
-      <i class="bi bi-instagram me-3"></i>
-      <i class="bi bi-whatsapp"></i>
+      <div class="mb-3">
+        <i class="bi bi-facebook me-3"></i>
+        <i class="bi bi-instagram me-3"></i>
+        <i class="bi bi-whatsapp"></i>
+      </div>
+
+      <hr class="bg-light">
+
+      <p>© 2026 Golden Salon</p>
+
     </div>
-
-    <hr class="bg-light">
-
-    <p>© 2026 Golden Salon</p>
-
-  </div>
-</footer>
+  </footer>
 
 </body>
+
 </html>
