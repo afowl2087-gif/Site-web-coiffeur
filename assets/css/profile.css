@@ -1,0 +1,65 @@
+body {
+      background: #eaeaea;
+      font-family: Arial;
+    }
+
+    /* NAVBAR */
+    .top-bar {
+      padding: 20px;
+    }
+
+    .btn-custom {
+      background: black;
+      color: white;
+      border-radius: 25px;
+      padding: 8px 20px;
+    }
+
+    /* PROFILE LEFT */
+    .profile-card {
+      background: #d9d9d9;
+      border-radius: 30px;
+      padding: 40px 20px;
+      text-align: center;
+      height: 100%;
+    }
+
+    .profile-icon {
+      width: 120px;
+      height: 120px;
+      background: black;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      margin-bottom: 20px;
+    }
+
+    .profile-icon i {
+      color: white;
+      font-size: 50px;
+    }
+
+    /* RIGHT FORM */
+    .form-container {
+      background: #d9d9d9;
+      border-radius: 30px;
+      padding: 30px;
+    }
+
+    .input-custom {
+      border-radius: 25px;
+      border: none;
+      padding: 12px 20px;
+      margin-bottom: 15px;
+      background: #f1f1f1;
+    }
+
+    .title-box {
+      background: #d9d9d9;
+      border-radius: 30px;
+      padding: 15px 25px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }

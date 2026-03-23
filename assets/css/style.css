@@ -1,0 +1,58 @@
+body {
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background: white;
+      padding: 15px 0;
+    }
+
+    .btn-custom {
+      background-color: black;
+      color: white;
+      border-radius: 25px;
+      padding: 8px 20px;
+    }
+
+    .btn-custom:hover {
+      background-color: #444;
+      color: white;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 60px 0;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+    .homme {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
+    }
+
+    /* SERVICES */
+    .services {
+      background-color: #f5f5f5;
+      padding: 60px 0;
+    }
+
+    .services h2 {
+      font-weight: bold;
+    }
+
+    .service-item {
+      margin-bottom: 10px;
+    }
+
+    .info i {
+      margin-right: 10px;
+    }
+
+    footer{
+        color: black;
+    }
