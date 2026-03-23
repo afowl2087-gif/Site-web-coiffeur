@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+// Redirection si déjà connecté
 if (isset($_SESSION['user_id'])) {
     header("Location: dashboard.php");
     exit;
@@ -11,31 +13,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = trim($_POST['password']);
 
-    $conn = new mysqli("localhost", "root", "", "salon_coiffure");
-    if ($conn->connect_error) die("Erreur connexion : " . $conn->connect_error);
+    try {
+        // Connexion PDO
+        $pdo = new PDO("mysql:host=localhost;dbname=salon_coiffure;charset=utf8", "root", "");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $conn->prepare("SELECT Id_clients, firstname, password FROM clients WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        // Préparer la requête
+        $stmt = $pdo->prepare("SELECT Id_clients, firstname, password FROM clients WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['Id_clients'];
-            $_SESSION['firstname'] = $user['firstname'];
+        if ($user) {
+            // Vérification du mot de passe
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['Id_clients'];
+                $_SESSION['firstname'] = $user['firstname'];
 
-            header("Location: dashboard.php");
-            exit;
+                header("Location: dashboard.php");
+                exit;
+            } else {
+                $message = "<div class='alert alert-danger'>Mot de passe incorrect</div>";
+            }
         } else {
-            $message = "<div class='alert alert-danger'>Mot de passe incorrect</div>";
+            $message = "<div class='alert alert-danger'>Utilisateur non trouvé</div>";
         }
-    } else {
-        $message = "<div class='alert alert-danger'>Utilisateur non trouvé</div>";
-    }
 
-    $stmt->close();
-    $conn->close();
+    } catch (PDOException $e) {
+        // Sécuriser le message d'erreur pour affichage
+        $message = "<div class='alert alert-danger'>Erreur base de données : " . htmlspecialchars($e->getMessage()) . "</div>";
+    }
 }
 ?>
 

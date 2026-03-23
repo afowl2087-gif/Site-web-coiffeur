@@ -14,28 +14,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($password !== $confirm) {
         $message = "<div class='alert alert-danger'>Les mots de passe ne correspondent pas</div>";
     } else {
-        $conn = new mysqli("localhost", "root", "", "salon_coiffure");
-        if ($conn->connect_error) die("Erreur connexion : " . $conn->connect_error);
+        try {
+            // Connexion PDO
+            $pdo = new PDO("mysql:host=localhost;dbname=salon_coiffure;charset=utf8", "root", "");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Vérifier si email existe déjà
-        $stmt = $conn->prepare("SELECT email FROM clients WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        if ($res->num_rows > 0) {
-            $message = "<div class='alert alert-danger'>Cet email est déjà utilisé</div>";
-        } else {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            // Vérifier si email existe déjà
+            $stmt = $pdo->prepare("SELECT email FROM clients WHERE email = ?");
+            $stmt->execute([$email]);
+            if ($stmt->rowCount() > 0) {
+                $message = "<div class='alert alert-danger'>Cet email est déjà utilisé</div>";
+            } else {
+                // Hash du mot de passe
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $conn->prepare("INSERT INTO clients (lastname, firstname, email, phone, password, civility) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $nom, $prenom, $email, $telephone, $hashedPassword, $civility);
-            $stmt->execute();
+                // Insertion en base
+                $stmt = $pdo->prepare("INSERT INTO clients (lastname, firstname, email, phone, password, civility) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$nom, $prenom, $email, $telephone, $hashedPassword, $civility]);
 
-            $message = "<div class='alert alert-success'>Inscription réussie ✅</div>";
+                $message = "<div class='alert alert-success'>Inscription réussie ✅</div>";
+            }
+        } catch (PDOException $e) {
+            $message = "<div class='alert alert-danger'>Erreur base de données : " . htmlspecialchars($e->getMessage()) . "</div>";
         }
-
-        $stmt->close();
-        $conn->close();
     }
 }
 ?>
