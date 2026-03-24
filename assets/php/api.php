@@ -26,6 +26,7 @@ if ($action == "getClients") {
 if ($action == "ajouterClient") {
     $sql = "INSERT INTO clients (firstname, lastname, email, phone, civility, password, is_admin)
             VALUES (:prenom, :nom, :email, :tel, :civ, :pass, 0)";
+    $password =password_hash($password,PASSWORD_DEFAULT);
     $stmt = $pdo->prepare($sql);
     $params = [
         ':prenom' => $_POST['prenom'],
