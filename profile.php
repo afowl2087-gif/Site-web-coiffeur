@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+// Connexion à la base
+$pdo = new PDO("mysql:host=localhost;dbname=salon_coiffure;charset=utf8", "root", "");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Vérifier si connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: formulaire-connexion3.php");
+    exit;
+}
+
+// Récupérer les infos depuis la DB
+$stmt = $pdo->prepare("SELECT * FROM clients WHERE Id_clients = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Vérifier que l'utilisateur existe
+if (!$user) {
+    echo "Utilisateur introuvable.";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -48,15 +72,32 @@
       <div class="col-md-8">
 
         <div class="title-box">
-          USERNAME
+          <h5>
+            <?= isset($user['firstname']) ? htmlspecialchars($user['firstname']) : 'Utilisateur' ?>
+          </h5>
         </div>
 
         <div class="form-container">
 
-          <input type="text" class="form-control input-custom" placeholder="LASTNAME">
-          <input type="text" class="form-control input-custom" placeholder="FIRSTNAME">
-          <input type="email" class="form-control input-custom" placeholder="username@gmail.com">
-          <input type="text" class="form-control input-custom" placeholder="+33 123456789">
+          <input type="text"
+            class="form-control input-custom"
+            value="<?= htmlspecialchars($user['lastname'] ?? '') ?>"
+            placeholder="LASTNAME">
+
+          <input type="text"
+            class="form-control input-custom"
+            value="<?= htmlspecialchars($user['firstname'] ?? '') ?>"
+            placeholder="FIRSTNAME">
+
+          <input type="email"
+            class="form-control input-custom"
+            value="<?= htmlspecialchars($user['email'] ?? '') ?>"
+            placeholder="username@gmail.com">
+
+          <input type="text"
+            class="form-control input-custom"
+            value="<?= htmlspecialchars($user['phone'] ?? '') ?>"
+            placeholder="+33 123456789">
 
         </div>
 

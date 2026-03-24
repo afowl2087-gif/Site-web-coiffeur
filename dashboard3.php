@@ -21,6 +21,8 @@ function e($str) {
   <title>Golden Salon</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
@@ -32,18 +34,19 @@ function e($str) {
     <img src="./assets/img/logo.png" width="120">
 
     <div class="ms-auto">
-      <span class="me-3">
-        <span style="font-size: 1.6rem; font-weight: 500; font-family: 'Poppins', sans-serif;">
-        Bonjour
-        </span>
-        <span style="font-size: 1.4rem; font-weight: 800; font-family: 'Playfair Display', sans-serif;">
-            <?php echo e($_SESSION['firstname']); ?>
-        </span>
-      </span>
-      <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
-      <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
-      <a href="logout.php" class="btn btn-danger">LOGOUT</a>
-    </div>
+      <div class="ms-auto d-flex align-items-center">
+
+  <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
+  <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+  <a href="logout.php" class="btn btn-danger me-2">LOGOUT</a>
+
+  <!-- Icône Profil -->
+  <a href="profile.php" class="text-dark" style="font-size: 2.5rem; margin-left: 15px;">
+    <i class="bi bi-person-circle"></i>
+  </a>
+
+</div>
+</div>
   </div>
 </nav>
 
