@@ -68,7 +68,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- TOP BAR -->
   <div class="container top-bar d-flex justify-content-between align-items-center py-2">
+    <a href="dashboard3.php">
     <img src="./assets/img/logo.png" width="80">
+    </a>
     <div>
       <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
       <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
@@ -100,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 
     <div class="signup mt-3 text-center">
-      <p>Pas encore inscrit ? <a href="formulaire-inscription3.php">S'inscrire</a></p>
+      <p class="mt-3 text-center">Pas encore inscrit ? <a href="formulaire-inscription3.php">S'inscrire</a></p>
     </div>
 
   </div>

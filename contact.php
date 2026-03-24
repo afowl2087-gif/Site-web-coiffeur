@@ -49,8 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- TOP BAR -->
   <div class="container top-bar d-flex justify-content-between align-items-center">
+    <a href="dashboard3.php">
     <img src="./assets/img/logo.png" width="80">
-
+    </a>
     <div>
       <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
       <?php if (isset($_SESSION['user_id'])): ?>
