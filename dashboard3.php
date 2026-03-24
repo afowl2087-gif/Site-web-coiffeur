@@ -94,7 +94,7 @@ $services = $pdo->query("SELECT * FROM services")->fetchAll(PDO::FETCH_ASSOC);
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg py-3 mb-5">
     <div class="container">
-      <a href="accueil.php"><img src="./assets/img/logo.png" width="120" alt="Golden Salon"></a>
+      <a href="dashboard3.php"><img src="./assets/img/logo.png" width="120" alt="Golden Salon"></a>
       <div class="ms-auto d-flex align-items-center">
         <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
         <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>

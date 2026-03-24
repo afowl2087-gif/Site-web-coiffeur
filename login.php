@@ -62,18 +62,91 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/login.css">
 </head>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f5f7;
+}
+
+/* NAVBAR */
+.navbar {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-radius: 0 0 20px 20px;
+}
+
+.btn-custom {
+  background-color: #1f2937;
+  color: white;
+  border-radius: 25px;
+  padding: 8px 25px;
+}
+
+.btn-custom:hover {
+  background-color: #111827;
+}
+
+/* LOGIN CARD */
+.login-card {
+  width: 400px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.login-title {
+  font-weight: 600;
+}
+
+.form-control {
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.login-btn {
+  background-color: #1f2937;
+  color: white;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.login-btn:hover {
+  background-color: #111827;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.input-group input {
+  padding-left: 35px;
+}
+</style>
 <body>
   <!-- TOP BAR -->
-  <div class="container top-bar d-flex justify-content-between align-items-center py-2">
-    <a href="#"><img src="./assets/img/logo.png" width="80"></a>
-    <div>
+ <nav class="navbar navbar-expand-lg py-3 mb-5">
+  <div class="container">
+
+    <a href="dashboard3.php">
+      <img src="./assets/img/logo.png" width="120">
+    </a>
+
+    <div class="ms-auto d-flex align-items-center">
       <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
       <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
-      <a href="javascript:history.back()" class="btn btn-outline-dark rounded-circle">
-        <i class="bi bi-arrow-left"></i>
-      </a>
     </div>
+
   </div>
+</nav>
 
   <!-- LOGIN CARD -->
   <div class="login-card mx-auto mt-5 p-4">

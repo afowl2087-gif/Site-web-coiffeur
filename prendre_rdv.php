@@ -11,7 +11,6 @@ $pdo = new PDO("mysql:host=localhost;dbname=salon;charset=utf8", "root", "");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $id_client = $_SESSION['user_id'];
-$firstname = $_SESSION['firstname'];
 
 // Messages
 $success = "";
@@ -24,24 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $stmt = $pdo->prepare("INSERT INTO reservations (status, Id_services, Id_clients, Id_disponibilites) VALUES (1, ?, ?, ?)");
             $stmt->execute([$_POST['service'], $id_client, $_POST['creneau']]);
-            $_SESSION['success_rdv'] = "✅ Rendez-vous confirmé !";
-            header("Location: prendre_rdv.php");
-            exit;
+            $success = "<div class='alert alert-success'>✅ Rendez-vous confirmé !</div>";
         } catch (PDOException $e) {
             $error = "<div class='alert alert-danger'>Erreur : " . htmlspecialchars($e->getMessage()) . "</div>";
         }
     }
 }
 
-if (isset($_SESSION['success_rdv'])) {
-    $success = "<div class='alert alert-success'>" . $_SESSION['success_rdv'] . "</div>";
-    unset($_SESSION['success_rdv']);
-}
-
-// Récupérer services
+// Services
 $services = $pdo->query("SELECT * FROM services")->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupérer créneaux disponibles
+// Créneaux
 $creneaux = $pdo->query("
     SELECT * FROM disponibilites
     WHERE active = 1
@@ -51,139 +43,173 @@ $creneaux = $pdo->query("
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prendre RDV - Golden Salon</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-<style>
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f5f7;
-    color: #333;
-}
-.navbar {
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border-radius: 0 0 20px 20px;
-}
-.btn-custom {
-    background-color: #1f2937;
-    color: white;
-    border-radius: 25px;
-    padding: 8px 25px;
-    transition: 0.3s;
-}
-.btn-custom:hover {
-    background-color: #111827;
-}
-.container h2 {
-    margin-bottom: 30px;
-    font-weight: 600;
-    color: #111827;
-}
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-    gap: 20px;
-}
-.service, .creneau {
-    background: #fff;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.service:hover, .creneau:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
-}
-.selected {
-    border: 2px solid #1f2937;
-    background-color: #1f2937;
-    color: white !important;
-}
-button.btn-dark {
-    background-color: #1f2937;
-    border-radius: 25px;
-    padding: 12px 0;
-    font-size: 16px;
-    font-weight: 500;
-}
-button.btn-dark:hover {
-    background-color: #111827;
-}
-.alert {
-    border-radius: 15px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prendre RDV - Golden Salon</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f5f7;
+        }
+
+        .navbar {
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .btn-custom {
+            background-color: #1f2937;
+            color: white;
+            border-radius: 25px;
+            padding: 8px 25px;
+        }
+
+        .btn-custom:hover {
+            background-color: #111827;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .service {
+            background: #fff;
+            border-radius: 20px;
+            padding: 15px;
+            flex: 1 1 200px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .creneau {
+            background: #fff;
+            border-radius: 50px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .selected {
+            background-color: #1f2937;
+            color: white;
+        }
+
+        button {
+            border-radius: 25px !important;
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg py-3 mb-5">
-  <div class="container">
-    <a href="dashboard3.php"><img src="./assets/img/logo.png" width="120"></a>
-    <div class="ms-auto d-flex align-items-center">
-      
-      <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
-      <a href="profile.php" class="text-dark fs-2 ms-3"><i class="bi bi-person-circle"></i></a>
-        &nbsp;&nbsp;&nbsp;
-      <a href="javascript:history.back()" class="btn btn-outline-dark rounded-circle"> <i class="bi bi-arrow-left"></i> </a>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg py-3 mb-5">
+        <div class="container">
+            <a href="dashboard3.php"><img src="./assets/img/logo.png" width="120"></a>
+            <div class="ms-auto d-flex align-items-center">
+                <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
+                <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+                <a href="profile.php" class="text-dark fs-2 ms-3"><i class="bi bi-person-circle"></i></a>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <h2 class="mb-4">Prendre un rendez-vous</h2>
+
+        <?= $success ?>
+        <?= $error ?>
+
+        <form method="POST">
+
+            <!-- SERVICES -->
+            <h4>Choisir un service</h4>
+            <div class="card-grid mb-4">
+                <?php foreach ($services as $s): ?>
+                    <div class="service" onclick="selectService(this, <?= $s['Id_services'] ?>)">
+                        <h5><?= htmlspecialchars($s['name']) ?></h5>
+                        <p><?= $s['price'] ?> €</p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <input type="hidden" name="service" id="serviceInput">
+
+            <!-- DATE -->
+            <h4>Choisir une date</h4>
+            <input type="date" id="datePicker" class="form-control mb-4">
+
+            <!-- CRENEAUX -->
+            <h4>Créneaux disponibles</h4>
+            <div id="creneauxContainer"></div>
+
+            <input type="hidden" name="creneau" id="creneauInput">
+
+            <button class="btn btn-dark w-100 mt-4">Confirmer le rendez-vous</button>
+
+        </form>
     </div>
-  </div>
-</nav>
 
-<div class="container">
+    <script>
+        const allCreneaux = <?= json_encode($creneaux); ?>;
 
-<h2>Prendre un rendez-vous</h2>
-<?= $success ?>
-<?= $error ?>
+        // service
+        function selectService(el, id) {
+            document.querySelectorAll('.service').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById("serviceInput").value = id;
+        }
 
-<form method="POST">
+        // date filter
+        document.getElementById('datePicker').addEventListener('change', function() {
+            const selectedDate = this.value;
+            const container = document.getElementById('creneauxContainer');
+            container.innerHTML = "";
 
-<h4>Services</h4>
-<div class="card-grid mb-4">
-<?php foreach ($services as $s): ?>
-    <div class="service" onclick="selectService(this, <?= $s['Id_services'] ?>)">
-        <h5><?= htmlspecialchars($s['name']) ?></h5>
-        <p><?= htmlspecialchars($s['price']) ?> €</p>
-        <small><?= htmlspecialchars($s['description']) ?></small>
-    </div>
-<?php endforeach; ?>
-</div>
-<input type="hidden" name="service" id="serviceInput">
+            const filtered = allCreneaux.filter(c => c.date_start.startsWith(selectedDate));
 
-<h4>Créneaux disponibles</h4>
-<div class="card-grid mb-4">
-<?php foreach ($creneaux as $c): ?>
-    <div class="creneau" onclick="selectCreneau(this, <?= $c['Id_disponibilites'] ?>)">
-        <?= date("d/m H:i", strtotime($c['date_start'])) ?>
-    </div>
-<?php endforeach; ?>
-</div>
-<input type="hidden" name="creneau" id="creneauInput">
+            if (filtered.length === 0) {
+                container.innerHTML = "<p>Aucun créneau disponible</p>";
+                return;
+            }
 
-<button class="btn btn-dark w-100">Confirmer le rendez-vous</button>
-</form>
-</div>
+            filtered.forEach(c => {
+                const div = document.createElement("div");
+                div.classList.add("creneau");
 
-<script>
-function selectService(el, id){
-    document.querySelectorAll('.service').forEach(e=>e.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById("serviceInput").value = id;
-}
+                const date = new Date(c.date_start);
+                const time = date.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
 
-function selectCreneau(el, id){
-    document.querySelectorAll('.creneau').forEach(e=>e.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById("creneauInput").value = id;
-}
-</script>
+                div.innerText = time;
+
+                div.onclick = function() {
+                    document.querySelectorAll('.creneau').forEach(e => e.classList.remove('selected'));
+                    div.classList.add('selected');
+                    document.getElementById("creneauInput").value = c.Id_disponibilites;
+                }
+
+                container.appendChild(div);
+            });
+        });
+    </script>
 
 </body>
+
 </html>

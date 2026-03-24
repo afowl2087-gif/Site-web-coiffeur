@@ -19,13 +19,11 @@
     }
 
     /* TOP BAR (même style login) */
-    .top-bar {
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      border-radius: 0 0 20px 20px;
-      padding: 1rem;
-      margin-top: 15px;
-    }
+    .navbar {
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 0 0 20px 20px;
+        }
 
     .btn-custom {
       background-color: #1f2937;
@@ -85,19 +83,17 @@
 <body>
 
   <!-- TOP BAR -->
-  <div class="container top-bar d-flex justify-content-between align-items-center">
-    <a href="accueil.php">
-      <img src="./assets/img/logo.png" width="80">
-    </a>
+   <nav class="navbar navbar-expand-lg py-3 mb-5">
+        <div class="container">
+            <a href="dashboard3.php"><img src="./assets/img/logo.png" width="120"></a>
+            <div class="ms-auto d-flex align-items-center">
+                <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
+                <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+                
 
-    <div>
-      <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
-      <a href="login.php" class="btn btn-custom me-2">LOGIN</a>
-      <a href="javascript:history.back()" class="btn btn-outline-dark rounded-circle">
-        <i class="bi bi-arrow-left"></i>
-      </a>
-    </div>
-  </div>
+            </div>
+        </div>
+    </nav>
 
   <!-- CONTACT CARD -->
   <div class="contact-card">

@@ -160,13 +160,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
         <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
 
-        <!-- lougout icon -->
-        <a href="logout.php" class="btn btn-danger me-2">LOGOUT</a>
 
-        <!-- Bouton retour -->
-        <a href="javascript:history.back()" class="btn btn-outline-dark rounded-circle">
-          <i class="bi bi-arrow-left"></i>
-        </a>
+
+        <div class="dropdown ms-3">
+          <a class="text-dark fs-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 p-2">
+
+            <li class="px-3 py-2">
+              <strong><?= htmlspecialchars($user['firstname']) ?></strong><br>
+              <small><?= htmlspecialchars($user['email']) ?></small>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="profile.php">
+                <i class="bi bi-person"></i> Mon profil
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item text-danger" href="logout.php">
+                <i class="bi bi-box-arrow-right"></i> Déconnexion
+              </a>
+            </li>
+
+          </ul>
+        </div>
 
       </div>
     </div>
@@ -216,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <p>© 2026 Golden Salon</p>
     </div>
   </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
