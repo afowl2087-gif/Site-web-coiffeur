@@ -74,10 +74,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- TOP BAR -->
   <div class="container top-bar d-flex justify-content-between align-items-center py-2">
+    <a href="dashboard3.php">
     <img src="./assets/img/logo.png" width="80">
+    </a>
     <div>
       <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
-      <a href="contact.html" class="btn btn-custom me-2">CONTACT</a>
+      <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
       <a href="javascript:history.back()" class="btn btn-outline-dark rounded-circle">
         <i class="bi bi-arrow-left"></i>
       </a>
