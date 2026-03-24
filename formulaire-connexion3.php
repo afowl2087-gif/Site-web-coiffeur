@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <img src="./assets/img/logo.png" width="80">
     <div>
       <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
-      <a href="contact.html" class="btn btn-custom me-2">CONTACT</a>
+      <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
       <a href="javascript:history.back()" class="btn btn-outline-dark rounded-circle">
         <i class="bi bi-arrow-left"></i>
       </a>

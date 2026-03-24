@@ -32,7 +32,14 @@ function e($str) {
     <img src="./assets/img/logo.png" width="120">
 
     <div class="ms-auto">
-      <span class="me-3">👋 Bonjour <?php echo e($_SESSION['firstname']); ?></span>
+      <span class="me-3">
+        <span style="font-size: 1.6rem; font-weight: 500; font-family: 'Poppins', sans-serif;">
+        Bonjour
+        </span>
+        <span style="font-size: 1.4rem; font-weight: 800; font-family: 'Playfair Display', sans-serif;">
+            <?php echo e($_SESSION['firstname']); ?>
+        </span>
+      </span>
       <a href="#" class="btn btn-custom me-2">PRENDRE RDV</a>
       <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
       <a href="logout.php" class="btn btn-danger">LOGOUT</a>
