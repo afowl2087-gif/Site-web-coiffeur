@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <!-- NAVBAR EXACTE -->
   <nav class="navbar navbar-expand-lg py-3 mb-5">
     <div class="container">
-      <a href="dashboard3.php">
+      <a href="accueil.php">
         <img src="./assets/img/logo.png" width="120">
       </a>
 

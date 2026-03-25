@@ -31,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Redirection selon rôle
         if ($user['is_admin'] == 1) {
-          header("Location: admin.php");
+          header("Location: /admin/admin.html");
         } else {
-          header("Location: dashboard3.php");
+          header("Location: accueil.php");
         }
 
         exit;
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <!-- NAVBAR EXACTE -->
   <nav class="navbar navbar-expand-lg py-3 mb-5">
     <div class="container">
-      <a href="dashboard3.php">
+      <a href="accueil.php">
         <img src="./assets/img/logo.png" width="120">
       </a>
 

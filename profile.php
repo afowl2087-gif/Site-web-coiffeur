@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
 
       <!-- Logo -->
-      <a href="dashboard3.php">
+      <a href="accueil.php">
         <img src="./assets/img/logo.png" width="120" alt="Golden Salon">
       </a>
 
