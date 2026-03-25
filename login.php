@@ -8,35 +8,36 @@ function e($str)
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $nom = trim($_POST['lastname'] ?? '');
-  $prenom = trim($_POST['firstname'] ?? '');
   $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
   $password = trim($_POST['password'] ?? '');
-  $confirm = trim($_POST['confirm_password'] ?? '');
-  $telephone = trim($_POST['phone'] ?? '');
-  $civility = $_POST['civility'] ?? '';
 
-  if (!$nom || !$prenom || !$email || !$password || !$confirm) {
-    $message = "<div class='alert alert-danger'>Tous les champs sont obligatoires</div>";
-  } elseif ($password !== $confirm) {
-    $message = "<div class='alert alert-danger'>Les mots de passe ne correspondent pas</div>";
+  if (!$email || !$password) {
+    $message = "<div class='alert alert-danger'>Champs obligatoires</div>";
   } else {
     try {
       $pdo = new PDO("mysql:host=localhost;dbname=salon;charset=utf8", "root", "");
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-      $stmt = $pdo->prepare("SELECT email FROM clients WHERE email = ?");
+      $stmt = $pdo->prepare("SELECT * FROM clients WHERE email = ?");
       $stmt->execute([$email]);
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-      if ($stmt->rowCount() > 0) {
-        $message = "<div class='alert alert-danger'>Email déjà utilisé</div>";
+      if ($user && password_verify($password, $user['password'])) {
+
+        $_SESSION['user_id'] = $user['Id_clients'];
+        $_SESSION['firstname'] = $user['firstname'];
+        $_SESSION['is_admin'] = $user['is_admin'];
+
+        // Redirection selon rôle
+        if ($user['is_admin'] == 1) {
+          header("Location: admin.php");
+        } else {
+          header("Location: dashboard3.php");
+        }
+
+        exit;
       } else {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        $stmt = $pdo->prepare("INSERT INTO clients (lastname, firstname, email, phone, password, civility) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nom, $prenom, $email, $telephone, $hashedPassword, $civility]);
-
-        $message = "<div class='alert alert-success'>Inscription réussie ✅</div>";
+        $message = "<div class='alert alert-danger'>Email ou mot de passe incorrect</div>";
       }
     } catch (PDOException $e) {
       $message = "<div class='alert alert-danger'>Erreur : " . e($e->getMessage()) . "</div>";
@@ -49,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
   <meta charset="UTF-8">
-  <title>Inscription</title>
+  <title>Login</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -60,12 +61,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       background-color: #f4f5f7;
     }
 
-    /* NAVBAR */
     .navbar {
       background: #fff;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       border-radius: 0 0 20px 20px;
     }
+    .navbar .btn-custom:hover {
+    background-color: #111827; /* même hover que login */
+}
 
     .btn-custom {
       background-color: #1f2937;
@@ -73,11 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       border-radius: 25px;
       padding: 8px 25px;
     }
-    .navbar .btn-custom:hover {
-    background-color: #111827; /* même hover que login */
-}
 
-    /* CARD */
+    /* MEME STYLE EXACT */
     .contact-card {
       width: 400px;
       margin: 80px auto;
@@ -93,9 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       font-weight: bold;
     }
 
-    /* INPUTS IDENTIQUES */
-    .form-control,
-    select {
+    .form-control {
       width: 100%;
       border-radius: 12px;
       padding: 12px;
@@ -103,15 +101,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       box-sizing: border-box;
     }
 
-    /* FIX SELECT */
-    select.form-control {
-      height: 48px;
-    }
-
     .contact-btn {
       width: 100%;
       background-color: #1f2937;
-      color: white;
+      color: #fff;
       border-radius: 50px;
       padding: 10px;
     }
@@ -139,33 +132,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <div class="contact-card">
 
-    <h2 class="contact-title">INSCRIPTION</h2>
+    <h2 class="contact-title">LOGIN</h2>
     <?php echo $message; ?>
 
     <form method="post">
 
-      <input type="text" name="firstname" class="form-control" placeholder="Prénom" required>
-      <input type="text" name="lastname" class="form-control" placeholder="Nom" required>
       <input type="email" name="email" class="form-control" placeholder="Email" required>
-      <input type="text" name="phone" class="form-control" placeholder="Téléphone">
-
       <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
-      <input type="password" name="confirm_password" class="form-control" placeholder="Confirmer mot de passe" required>
-
-      <select name="civility" class="form-control">
-        <option disabled selected>Choisir civilité</option>
-        <option value="M">Monsieur</option>
-        <option value="Mme">Madame</option>
-      </select>
 
       <button type="submit" class="btn contact-btn">
-        <i class="bi bi-person-plus"></i> S'inscrire
+        <i class="bi bi-box-arrow-in-right"></i> Se connecter
       </button>
 
     </form>
 
     <p class="text-center mt-3">
-      Déjà inscrit ? <a href="login.php">Se connecter</a>
+      Pas encore inscrit ? <a href="inscription.php">S'inscrire</a>
     </p>
 
   </div>

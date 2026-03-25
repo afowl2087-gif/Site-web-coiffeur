@@ -7,7 +7,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Vérifier si connecté
 if (!isset($_SESSION['user_id'])) {
-  header("Location: formulaire-connexion3.php");
+  header("Location: login.php");
   exit;
 }
 
@@ -241,7 +241,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <p>© 2026 Golden Salon</p>
     </div>
   </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+      <h5>Golden Salon</h5>
+      <p>Votre salon de coiffure à Amiens ✂️</p>
+      <p>55 rue Sully, Amiens</p>
+      <p>+33 712345678</p>
+      <hr class="bg-light">
+      <p>© 2026 Golden Salon</p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
