@@ -5,47 +5,96 @@
     <meta charset="UTF-8">
     <title>Mentions légales - Golden Salon</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f5f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar style login */
+        .navbar {
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .btn-custom {
+            background-color: #1f2937;
+            color: #fff;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            transition: 0.3s;
+        }
+
+        .btn-custom:hover {
+            background-color: #111827;
+        }
+
+        /* Page content */
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        h1, h4 {
+            color: #1f2937;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .btn-back {
+            background-color: #1f2937;
+            color: #fff;
+            border-radius: 50px;
+            padding: 10px 25px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-back:hover {
+            background-color: #111827;
+            color: #fff;
+        }
+
+        /* Responsive iframe maps */
+        .map-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 40%;
+            margin-top: 20px;
+        }
+
+        .map-container iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+    </style>
 </head>
-
 <body>
-   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f5f7;
-    }
 
-    /* TOP BAR (même style login) */
-    .navbar {
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      border-radius: 0 0 20px 20px;
-    }
-
-    .btn-custom {
-      background-color: #1f2937;
-      color: #fff;
-      border-radius: 50px;
-      padding: 0.5rem 1.5rem;
-      transition: 0.3s;
-    }
-
-    .navbar .btn-custom:hover {
-    background-color: #111827; /* même hover que login */
-}
-</style>
-
-<div class="container py-5">
-     <!-- TOP BAR -->
-  <nav class="navbar navbar-expand-lg py-3 mb-5">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg py-3 mb-5">
     <div class="container">
-      <a href="accueil.php"><img src="./assets/img/logo.png" width="120"></a>
-      <div class="ms-auto d-flex align-items-center">
-        <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
-        <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
-        <a href="profile.php" class="text-dark fs-2 ms-3"><i class="bi bi-person-circle"></i></a>
-      </div>
+        <a href="accueil.php"><img src="./assets/img/logo.png" width="120" alt="Golden Salon"></a>
+        <div class="ms-auto d-flex align-items-center">
+            <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
+            <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+            <a href="profile.php" class="text-dark fs-2 ms-3"><i class="bi bi-person-circle"></i></a>
+        </div>
     </div>
-  </nav>
+</nav>
+
+<!-- CONTENU -->
+<div class="content-wrapper">
     <h1 class="mb-4">Mentions légales</h1>
 
     <h4>Éditeur du site</h4>
@@ -81,8 +130,9 @@
         Le site peut utiliser des cookies pour améliorer l’expérience utilisateur.
     </p>
 
-    <a href="accueil.php" class="btn btn-dark mt-4">Retour</a>
+    <!-- Bouton retour -->
+    <a href="accueil.php" class="btn-back mt-3 d-inline-block">Retour</a>
 </div>
 
 </body>
-</html
+</html>
