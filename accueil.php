@@ -177,9 +177,10 @@ $services = $pdo->query("SELECT * FROM services")->fetchAll(PDO::FETCH_ASSOC);
       <p>+33 712345678</p>
       <hr class="bg-light">
       <p>© 2026 Golden Salon</p>
+       <a href="mention.php" class="btn btn-dark mt-4">Mentions légales</a>
     </div>
   </footer>
-
+   
 </body>
 
 </html>
