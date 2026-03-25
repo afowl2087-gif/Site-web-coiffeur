@@ -15,7 +15,7 @@ function afficherSection(nomSection) {
 
 
 function chargerClients() {
-    fetch("../assets/php/api.php?action=getClients")
+    fetch("../../api.php?action=getClients")
     .then(function(reponse) {
         return reponse.json();
     })
@@ -50,7 +50,7 @@ function ajouterClient(event) {
     donnees.append("civilite",  document.getElementById("client-civilite").value);
     donnees.append("password",  document.getElementById("client-password").value);
 
-    fetch("../assets/php/api.php?action=ajouterClient", {
+    fetch("../../api.php?action=ajouterClient", {
         method: "POST",
         body: donnees
     })
@@ -70,7 +70,7 @@ function ajouterClient(event) {
 
 function supprimerClient(id) {
     if (confirm("Supprimer ce client ?")) {
-        fetch("api.php?action=supprimerClient&id=" + id)
+        fetch("../../api.php?action=supprimerClient&id=" + id)
         .then(function(reponse) {
             return reponse.json();
         })
@@ -86,7 +86,7 @@ function supprimerClient(id) {
 
 
 function chargerServices() {
-    fetch("../assets/php/api.php?action=getServices")
+    fetch("../../api.php?action=getServices")
     .then(function(reponse) {
         return reponse.json();
     })
@@ -118,7 +118,7 @@ function ajouterService(event) {
     donnees.append("duree",       document.getElementById("service-duree").value);
     donnees.append("prix",        document.getElementById("service-prix").value);
 
-    fetch("../assets/php/api.php?action=ajouterService", {
+    fetch("../../api.php?action=ajouterService", {
         method: "POST",
         body: donnees
     })
@@ -138,7 +138,7 @@ function ajouterService(event) {
 
 function supprimerService(id) {
     if (confirm("Supprimer ce service ?")) {
-        fetch("../assets/php/api.php?action=supprimerService&id=" + id)
+        fetch("../../api.php?action=supprimerService&id=" + id)
         .then(function(reponse) {
             return reponse.json();
         })
@@ -154,7 +154,7 @@ function supprimerService(id) {
 
 
 function chargerDispos() {
-    fetch("../assets/php/api.php?action=getDisponibilites")
+    fetch("../../api.php?action=getDisponibilites")
     .then(function(reponse) {
         return reponse.json();
     })
@@ -189,7 +189,7 @@ function ajouterDispo(event) {
     donnees.append("date",  document.getElementById("dispo-date").value);
     donnees.append("actif", document.getElementById("dispo-actif").value);
 
-    fetch("../assets/php/api.php?action=ajouterDisponibilite", {
+    fetch("../../api.php?action=ajouterDisponibilite", {
         method: "POST",
         body: donnees
     })
@@ -209,7 +209,7 @@ function ajouterDispo(event) {
 
 function supprimerDispo(id) {
     if (confirm("Supprimer cette disponibilité ?")) {
-        fetch("../assets/php/api.php?action=supprimerDisponibilite&id=" + id)
+        fetch("../../api.php?action=supprimerDisponibilite&id=" + id)
         .then(function(reponse) {
             return reponse.json();
         })
@@ -230,7 +230,7 @@ function chargerReservations() {
     chargerSelectServices();
     chargerDispos();
 
-    fetch("../assets/php/api.php?action=getReservations")
+    fetch("../../api.php?action=getReservations")
     .then(function(reponse) {
         return reponse.json();
     })
@@ -258,7 +258,7 @@ function chargerReservations() {
 }
 
 function chargerSelectClients() {
-    fetch("../assets/php/api.php?action=getClients")
+    fetch("../../api.php?action=getClients")
     .then(function(reponse) {
         return reponse.json();
     })
@@ -273,7 +273,7 @@ function chargerSelectClients() {
 }
 
 function chargerSelectServices() {
-    fetch("../assets/php/api.php?action=getServices")
+    fetch("../../api.php?action=getServices")
     .then(function(reponse) {
         return reponse.json();
     })
@@ -296,7 +296,7 @@ function ajouterReservation(event) {
     donnees.append("id_dispo",   document.getElementById("resa-dispo").value);
     donnees.append("statut",     document.getElementById("resa-statut").value);
 
-    fetch("../assets/php/api.php?action=ajouterReservation", {
+    fetch("../../api.php?action=ajouterReservation", {
         method: "POST",
         body: donnees
     })
@@ -315,7 +315,7 @@ function ajouterReservation(event) {
 
 function supprimerReservation(id) {
     if (confirm("Supprimer cette réservation ?")) {
-        fetch("../assets/php/api.php?action=supprimerReservation&id=" + id)
+        fetch("../../api.php?action=supprimerReservation&id=" + id)
         .then(function(reponse) {
             return reponse.json();
         })
