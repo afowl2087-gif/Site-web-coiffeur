@@ -20,10 +20,10 @@
 
     /* TOP BAR (même style login) */
     .navbar {
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-radius: 0 0 20px 20px;
-        }
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-radius: 0 0 20px 20px;
+    }
 
     .btn-custom {
       background-color: #1f2937;
@@ -33,48 +33,35 @@
       transition: 0.3s;
     }
 
-    .btn-custom:hover {
-      background-color: #111827;
-      color: #fff;
-    }
+    .navbar .btn-custom:hover {
+    background-color: #111827; /* même hover que login */
+}
 
-    /* CARD */
+    /* CONTACT CARD */
     .contact-card {
       width: 400px;
       margin: 80px auto;
       background: #fff;
       border-radius: 20px;
       padding: 30px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
     }
 
     .contact-title {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       font-weight: bold;
     }
 
-    .form-control {
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 15px;
+    .contact-info p {
+      margin: 10px 0;
+      font-size: 16px;
     }
 
-    textarea {
-      resize: none;
-    }
-
-    .contact-btn {
-      width: 100%;
-      background-color: #1f2937;
-      color: #fff;
-      border-radius: 50px;
-      padding: 10px;
-      transition: 0.3s;
-    }
-
-    .contact-btn:hover {
-      background-color: #111827;
+    .contact-info i {
+      margin-right: 8px;
+      color: #1f2937;
     }
   </style>
 
@@ -83,39 +70,39 @@
 <body>
 
   <!-- TOP BAR -->
-   <nav class="navbar navbar-expand-lg py-3 mb-5">
-        <div class="container">
-            <a href="dashboard3.php"><img src="./assets/img/logo.png" width="120"></a>
-            <div class="ms-auto d-flex align-items-center">
-                <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
-                <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
-                
-
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg py-3 mb-5">
+    <div class="container">
+      <a href="dashboard3.php"><img src="./assets/img/logo.png" width="120"></a>
+      <div class="ms-auto d-flex align-items-center">
+        <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
+        <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+        <a href="profile.php" class="text-dark fs-2 ms-3"><i class="bi bi-person-circle"></i></a>
+      </div>
+    </div>
+  </nav>
 
   <!-- CONTACT CARD -->
   <div class="contact-card">
+    <h2 class="contact-title">NOUS CONTACTER</h2>
 
-    <h2 class="contact-title">CONTACT US</h2>
-
-    <form>
-
-      <input type="text" class="form-control" placeholder="Votre nom">
-
-      <input type="email" class="form-control" placeholder="Votre email">
-
-      <textarea class="form-control" rows="4" placeholder="Votre message..."></textarea>
-
-      <button class="btn contact-btn">
-        <i class="bi bi-send"></i> Envoyer
-      </button>
-
-    </form>
-
+    <div class="contact-info">
+      <p><i class="bi bi-geo-alt"></i> 55 rue Sully, 80000 Amiens, France</p>
+      <p><i class="bi bi-telephone"></i> +33 712345678</p>
+      <p><i class="bi bi-envelope"></i> contact@goldensalon.com</p>
+      <p><i class="bi bi-clock"></i> Lundi - Samedi : 10h - 20h</p>
+    </div>
   </div>
 
-</body>
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+      <h5>Golden Salon</h5>
+      <p>Votre salon de coiffure à Amiens ✂️</p>
+      <p>55 rue Sully, Amiens</p>
+      <p>+33 712345678</p>
+      <hr class="bg-light">
+      <p>© 2026 Golden Salon</p>
+    </div>
+  </footer>
 
+</body>
 </html>

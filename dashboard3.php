@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] == 1) {
+    header("Location: login.php");
+    exit;
+}
+
+
 // Fonction anti XSS
 function e($str)
 {
@@ -45,18 +51,17 @@ $services = $pdo->query("SELECT * FROM services")->fetchAll(PDO::FETCH_ASSOC);
       border-radius: 0 0 20px 20px;
     }
 
-    .btn-custom {
-      background-color: #1f2937;
-      color: white;
-      border-radius: 25px;
-      padding: 8px 25px;
-      transition: 0.3s;
-    }
+   .btn-custom {
+    background-color: #1f2937;
+    color: white;
+    border-radius: 25px;
+    padding: 8px 25px;
+    transition: 0.3s; /* pour une transition douce */
+}
 
-    .btn-custom:hover {
-      background-color: #111827;
-    }
-
+.navbar .btn-custom:hover {
+    background-color: #111827; /* même hover que login */
+}
     .hero {
       padding: 40px 0;
       background: linear-gradient(135deg, #f8fafc, #e2e8f0);

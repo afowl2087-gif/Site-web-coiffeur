@@ -1,173 +1,166 @@
 <?php
 session_start();
-
-// Fonction pour sécuriser les sorties (XSS futur)
-function e($str)
-{
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-}
-
 $message = "";
 
+function e($str)
+{
+  return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $password = trim($_POST['password']);
+  $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+  $password = trim($_POST['password'] ?? '');
 
+  if (!$email || !$password) {
+    $message = "<div class='alert alert-danger'>Champs obligatoires</div>";
+  } else {
     try {
-        // Connexion PDO
-        $pdo = new PDO("mysql:host=localhost;dbname=salon;charset=utf8", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $pdo = new PDO("mysql:host=localhost;dbname=salon;charset=utf8", "root", "");
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Préparer la requête pour récupérer l'utilisateur
-        $stmt = $pdo->prepare("SELECT Id_clients, firstname, password, is_admin FROM clients WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      $stmt = $pdo->prepare("SELECT * FROM clients WHERE email = ?");
+      $stmt->execute([$email]);
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            if (password_verify($password, $user['password'])) {
-                // Stocker les infos dans la session
-                $_SESSION['user_id'] = $user['Id_clients'];
-                $_SESSION['firstname'] = $user['firstname'];
-                $_SESSION['is_admin'] = $user['is_admin'];
+      if ($user && password_verify($password, $user['password'])) {
 
-                // Redirection selon le rôle
-                if ($user['is_admin']) {
-                    header("Location: admin.html");
-                    exit;
-                } else {
-                    header("Location: dashboard3.php");
-                    exit;
-                }
+        $_SESSION['user_id'] = $user['Id_clients'];
+        $_SESSION['firstname'] = $user['firstname'];
+        $_SESSION['is_admin'] = $user['is_admin'];
 
-            } else {
-                $message = "<div class='alert alert-danger'>Mot de passe incorrect</div>";
-            }
+        // Redirection selon rôle
+        if ($user['is_admin'] == 1) {
+          header("Location: admin.php");
         } else {
-            $message = "<div class='alert alert-danger'>Utilisateur non trouvé</div>";
+          header("Location: dashboard3.php");
         }
+
+        exit;
+      } else {
+        $message = "<div class='alert alert-danger'>Email ou mot de passe incorrect</div>";
+      }
     } catch (PDOException $e) {
-        $message = "<div class='alert alert-danger'>Erreur base de données : " . e($e->getMessage()) . "</div>";
+      $message = "<div class='alert alert-danger'>Erreur : " . e($e->getMessage()) . "</div>";
     }
+  }
 }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Golden Salon</title>
-  <!-- Bootstrap -->
+  <title>Login</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/login.css">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f5f7;
+    }
+
+    .navbar {
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-radius: 0 0 20px 20px;
+    }
+    .navbar .btn-custom:hover {
+    background-color: #111827; /* même hover que login */
+}
+
+    .btn-custom {
+      background-color: #1f2937;
+      color: white;
+      border-radius: 25px;
+      padding: 8px 25px;
+    }
+
+    /* MEME STYLE EXACT */
+    .contact-card {
+      width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .contact-title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .form-control {
+      width: 100%;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    .contact-btn {
+      width: 100%;
+      background-color: #1f2937;
+      color: #fff;
+      border-radius: 50px;
+      padding: 10px;
+    }
+  </style>
 </head>
-<style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f4f5f7;
-}
 
-/* NAVBAR */
-.navbar {
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border-radius: 0 0 20px 20px;
-}
-
-.btn-custom {
-  background-color: #1f2937;
-  color: white;
-  border-radius: 25px;
-  padding: 8px 25px;
-}
-
-.btn-custom:hover {
-  background-color: #111827;
-}
-
-/* LOGIN CARD */
-.login-card {
-  width: 400px;
-  background: #fff;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
-
-.login-title {
-  font-weight: 600;
-}
-
-.form-control {
-  border-radius: 12px;
-  padding: 12px;
-}
-
-.login-btn {
-  background-color: #1f2937;
-  color: white;
-  border-radius: 25px;
-  padding: 10px;
-}
-
-.login-btn:hover {
-  background-color: #111827;
-}
-
-.input-group {
-  position: relative;
-}
-
-.input-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
-}
-
-.input-group input {
-  padding-left: 35px;
-}
-</style>
 <body>
-  <!-- TOP BAR -->
- <nav class="navbar navbar-expand-lg py-3 mb-5">
-  <div class="container">
 
-    <a href="dashboard3.php">
-      <img src="./assets/img/logo.png" width="120">
-    </a>
+  <!-- NAVBAR EXACTE -->
+  <nav class="navbar navbar-expand-lg py-3 mb-5">
+    <div class="container">
+      <a href="dashboard3.php">
+        <img src="./assets/img/logo.png" width="120">
+      </a>
 
-    <div class="ms-auto d-flex align-items-center">
-      <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
-      <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+      <div class="ms-auto d-flex align-items-center">
+        <a href="prendre_rdv.php" class="btn btn-custom me-2">PRENDRE RDV</a>
+        <a href="contact.php" class="btn btn-custom me-2">CONTACT</a>
+        <a href="profile.php" class="text-dark fs-2 ms-3">
+          <i class="bi bi-person-circle"></i>
+        </a>
+      </div>
     </div>
+  </nav>
 
-  </div>
-</nav>
+  <div class="contact-card">
 
-  <!-- LOGIN CARD -->
-  <div class="login-card mx-auto mt-5 p-4">
-    <h2 class="login-title text-center mb-4">LOGIN</h2>
+    <h2 class="contact-title">LOGIN</h2>
     <?php echo $message; ?>
 
     <form method="post">
-      <div class="input-group mb-3">
-        <i class="bi bi-envelope input-icon"></i>
-        <input type="email" name="email" placeholder="Email" class="form-control" required>
-      </div>
-      <div class="input-group mb-3">
-        <i class="bi bi-lock input-icon"></i>
-        <input type="password" name="password" placeholder="Mot de passe" class="form-control" required>
-      </div>
-      <button type="submit" class="btn login-btn w-100">LOGIN</button>
+
+      <input type="email" name="email" class="form-control" placeholder="Email" required>
+      <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+
+      <button type="submit" class="btn contact-btn">
+        <i class="bi bi-box-arrow-in-right"></i> Se connecter
+      </button>
+
     </form>
 
-    <div class="signup mt-3 text-center">
-      <p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
-    </div>
+    <p class="text-center mt-3">
+      Pas encore inscrit ? <a href="inscription.php">S'inscrire</a>
+    </p>
+
   </div>
+  <footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+      <h5>Golden Salon</h5>
+      <p>Votre salon de coiffure à Amiens ✂️</p>
+      <p>55 rue Sully, Amiens</p>
+      <p>+33 712345678</p>
+      <hr class="bg-light">
+      <p>© 2026 Golden Salon</p>
+    </div>
+  </footer>
 </body>
+
 </html>
