@@ -24,17 +24,23 @@ if ($action == "getClients") {
 }
 
 if ($action == "ajouterClient") {
+    
     $sql = "INSERT INTO clients (firstname, lastname, email, phone, civility, password, is_admin)
             VALUES (:prenom, :nom, :email, :tel, :civ, :pass, 0)";
-    $password =password_hash($password,PASSWORD_DEFAULT);
+    $hashedpassword =password_hash($_POST['password'],PASSWORD_DEFAULT);
+    $nomclient = htmlspecialchars($_POST['nom']);
+    $prenomclient = htmlspecialchars($_POST['prenom']);
+    $telClient = htmlspecialchars($_POST['telephone']);
+    $civclient = htmlspecialchars($_POST['civilite']);
+    $emailclient =htmlspecialchars($_POST['email']);
     $stmt = $pdo->prepare($sql);
     $params = [
-        ':prenom' => $_POST['prenom'],
-        ':nom'    => $_POST['nom'],
-        ':email'   => $_POST['email'],
-        ':tel'     => $_POST['telephone'],
-        ':civ'     => $_POST['civilite'],
-        ':pass'    => $_POST['password']
+        ':prenom' => $prenomclient,
+        ':nom'    => $nomclient,
+        ':email'   => $emailclient,
+        ':tel'     => $telClient,
+        ':civ'     => $civclient,
+        ':pass'    => $hashedpassword
     ];
     if ($stmt->execute($params)) {
         echo json_encode(["succes" => true]);
@@ -51,13 +57,17 @@ if ($action == "getServices") {
 if ($action == "ajouterService") {
     $sql = "INSERT INTO services (name, description, duration_minutes, price) 
             VALUES (:nom, :desc, :duree, :prix)";
+    $nomservice = htmlspecialchars($_POST['nom']);
+    $descservice = htmlspecialchars($_POST['description']);
+    $dureeservice = htmlspecialchars($_POST['duree']);
+    $prixservice = htmlspecialchars($_POST['prix']);
     $stmt = $pdo->prepare($sql);
     
     $success = $stmt->execute([
-        ':nom'   => $_POST['nom'],
-        ':desc'  => $_POST['description'],
-        ':duree' => $_POST['duree'],
-        ':prix'  => $_POST['prix']
+        ':nom'   => $nomservice ,
+        ':desc'  => $descservice,
+        ':duree' => $dureeservice,
+        ':prix'  => $prixservice
     ]);
 
     if ($success) {
@@ -90,8 +100,10 @@ if ($action == "getDisponibilites") {
 
 if ($action == "ajouterDisponibilite") {
     $sql = "INSERT INTO disponibilites (date_start, active) VALUES (:date, :actif)";
+    $date_dispo = htmlspecialchars($_POST['date']);
+    $actif_dispo = htmlspecialchars($_POST['actif']);
     $stmt = $pdo->prepare($sql);
-    if ($stmt->execute([':date' => $_POST['date'], ':actif' => $_POST['actif']])) {
+    if ($stmt->execute([':date' => $date_dispo, ':actif' => $actif_dispo])) {
         echo json_encode(["succes" => true]);
     } else {
         echo json_encode(["succes" => false, "erreur" => $stmt->errorInfo()[2]]);
@@ -121,12 +133,18 @@ if ($action == "getReservations") {
 if ($action == "ajouterReservation") {
     $sql = "INSERT INTO reservations (Id_clients, Id_services, Id_disponibilites, status)
             VALUES (:idC, :idS, :idD, :statut)";
+    $id_reservation_client =  $_POST['id_client'];
+    $id_reservation_service =  $_POST['id_service'];
+    $id_reservation_disponibilites = $_POST['id_dispo'];
+    $id_reservation_statut = $_POST['statut'];
+    
+
     $stmt = $pdo->prepare($sql);
     $params = [
-        ':idC'    => $_POST['id_client'],
-        ':idS'    => $_POST['id_service'],
-        ':idD'    => $_POST['id_dispo'],
-        ':statut' => $_POST['statut']
+        ':idC'    => $id_reservation_client,
+        ':idS'    => $id_reservation_service,
+        ':idD'    => $id_reservation_disponibilites,
+        ':statut' => $id_reservation_statut
     ];
     if ($stmt->execute($params)) {
         echo json_encode(["succes" => true]);

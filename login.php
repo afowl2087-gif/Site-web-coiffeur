@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Redirection selon le rôle
                 if ($user['is_admin']) {
-                    header("Location: admin.html");
+                    header("Location: /admin/admin.html");
                     exit;
                 } else {
                     header("Location: dashboard3.php");
